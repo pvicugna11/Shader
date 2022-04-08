@@ -7,11 +7,11 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_CircleDraw
-  m_Shader: {fileID: -6465566751694194690, guid: d88bb05a25acc8a4181090838cf5fef2, type: 3}
+  m_Name: ShaderToy
+  m_Shader: {fileID: -6465566751694194690, guid: 912c48b2e78346f47bf5add215f05497, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 2
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -38,7 +38,7 @@ Material:
     - _QueueOffset: 0
     m_Colors: []
   m_BuildTextureStacks: []
---- !u!114 &7236478887588127391
+--- !u!114 &3339054012762483557
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
