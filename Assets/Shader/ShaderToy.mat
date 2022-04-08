@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_ShaderToy
+  m_Name: ShaderToy
   m_Shader: {fileID: -6465566751694194690, guid: 912c48b2e78346f47bf5add215f05497, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
