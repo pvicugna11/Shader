@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &75039557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1382,8 +1382,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: -0.045627598, y: 0.9407908, z: -0.14074363, w: -0.30499524}
-  m_LocalPosition: {x: -1.6913131, y: 1.1610221, z: 2.4260528}
+  m_LocalRotation: {x: 0.033994544, y: 0.9501164, z: -0.11167406, w: 0.28922698}
+  m_LocalPosition: {x: -0.69687974, y: 0.8018069, z: 1.3066065}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1570,7 +1570,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1128307206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2351,6 +2351,6 @@ PrefabInstance:
     - target: {fileID: 23361667934628092, guid: 5ad3ffd65c9fae149aee33b823ffd4d8, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 75074f553fbcc224084cb02cda5cfe16, type: 2}
+      objectReference: {fileID: 2100000, guid: 9aafba243cc94924289a6e873bbd1ffc, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5ad3ffd65c9fae149aee33b823ffd4d8, type: 3}
