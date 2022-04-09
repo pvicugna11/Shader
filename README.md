@@ -1,2 +1,2 @@
-# Shader
- シェーダーで遊んでみた！
+# ShaderGraph
+ Shader Graphで遊んでみた！
