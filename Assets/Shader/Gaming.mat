@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Sheep
+  m_Name: Gaming
   m_Shader: {fileID: -6465566751694194690, guid: e19eeb1f38cb8cd4e836bf595cd68d2f, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -49,6 +49,8 @@ Material:
     m_Floats:
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _num: 1
+    - _term: 1
     m_Colors:
-    - _Base_Color: {r: 1, g: 0, b: 0, a: 0}
+    - _Base_Color: {r: 1, g: 0, b: 0.038640022, a: 0}
   m_BuildTextureStacks: []
