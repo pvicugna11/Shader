@@ -147,13 +147,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 1
   settings:
-    passTag: Distorsion
-    Event: 300
+    passTag: Distortion
+    Event: 450
     filterSettings:
       RenderQueueType: 1
       LayerMask:
         serializedVersion: 2
-        m_Bits: 0
+        m_Bits: 1024
       PassNames: []
     overrideMaterial: {fileID: 2100000, guid: bb95f0f86a346e14691049c4b701aa3c, type: 2}
     overrideMaterialPassIndex: 0
