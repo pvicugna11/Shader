@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Window
-  m_Shader: {fileID: 4800000, guid: 49077a9fa700cfb44bc494543771a9cb, type: 3}
+  m_Name: StencilWrite
+  m_Shader: {fileID: 4800000, guid: c0641d0d85ef5c645896e1662aa96752, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -21,7 +21,6 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Ints: []
-    m_Floats:
-    - _Mask: 1
+    m_Floats: []
     m_Colors: []
   m_BuildTextureStacks: []
