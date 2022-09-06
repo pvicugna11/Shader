@@ -94,7 +94,7 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 0
     - _NoiseFrec: 50
-    - _NoiseScale: 50
+    - _NoiseScale: 200
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
