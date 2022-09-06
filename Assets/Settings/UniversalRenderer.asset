@@ -65,5 +65,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c739487d3048e4361a7056be3f90f282, type: 3}
   m_Name: PostEffectFeature
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   material: {fileID: 2100000, guid: dc4d6745d7a49441fb34f743b527cf57, type: 2}
