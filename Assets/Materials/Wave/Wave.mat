@@ -22,8 +22,8 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _Attenuation: 0.99
-    - _C: 0.2
+    - _Attenuation: 0.994
+    - _C: 0.1
     - _Stride: 3
     m_Colors: []
   m_BuildTextureStacks: []
