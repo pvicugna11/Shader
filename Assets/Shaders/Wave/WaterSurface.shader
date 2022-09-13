@@ -2,7 +2,7 @@ Shader "Unlit/WaterSurface"
 {
     Properties
     {
-        _MainTex("Texture", 2D) = "white" {}
+        _BaseColor("Base Color", Color) = (1, 1, 1, 1)
         _HeightMap ("Height Map", 2D) = "gray" {}
     }
     SubShader
@@ -20,6 +20,8 @@ Shader "Unlit/WaterSurface"
 
             #include "UnityCG.cginc"
 
+            half4 _BaseColor;
+
             struct appdata
             {
                 float4 vertex : POSITION;
@@ -35,10 +37,8 @@ Shader "Unlit/WaterSurface"
                 float3 worldNormal : TEXCOORD3;
             };
 
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
-
             sampler2D _HeightMap;
+            float4 _HeightMap_ST;
             float4 _HeightMap_TexelSize;
 
             v2f vert (appdata v)
@@ -63,7 +63,7 @@ Shader "Unlit/WaterSurface"
 
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                o.uv = TRANSFORM_TEX(v.uv, _HeightMap);
                 o.normal = normal;
                 o.worldPos = mul(unity_ObjectToWorld, v.vertex);
                 o.worldNormal = UnityObjectToWorldNormal(normal);
@@ -75,16 +75,22 @@ Shader "Unlit/WaterSurface"
                 // ワールド座標系の視野ベクトル
                 half3 worldViewDir = normalize(_WorldSpaceCameraPos - i.worldPos);
 
-                // 反射
-                // 反射方向
-                half3 reflDir = reflect(-worldViewDir, i.worldNormal);
-                // 反射光
-                half4 reflColor = UNITY_SAMPLE_TEXCUBE_LOD(unity_SpecCube0, reflDir, 0);
-
+                // ライトによる色
                 float3 lightDir = normalize(_WorldSpaceLightPos0 - i.worldPos);
                 float diff = max(0, dot(i.normal, lightDir));
-                fixed4 col = tex2D(_MainTex, i.uv) * diff;
-                return reflColor;
+                half4 baseColor = _BaseColor * diff;
+
+                // 反射
+                half3 reflDir = reflect(-worldViewDir, i.worldNormal);
+                half4 reflColor = UNITY_SAMPLE_TEXCUBE_LOD(unity_SpecCube0, reflDir, 0);
+
+                // フレネル
+                half fresenl = dot(worldViewDir, i.worldNormal);
+                half fresenl0 = .2;
+                fresenl = fresenl0 + (1 - fresenl0) * pow((1 - fresenl), 5);
+
+                half4 col = lerp(baseColor, reflColor, fresenl);
+                return col;
             }
             ENDCG
         }
