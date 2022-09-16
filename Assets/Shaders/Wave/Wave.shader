@@ -25,7 +25,7 @@ Shader "Unlit/Wave"
                 // CustomRenderTextureのuv座標
                 float2 uv = i.globalTexcoord;
 
-                // 微小区間の算出
+                // 1pxあたりの単位
                 float du = 1 / _CustomRenderTextureWidth;
                 float dv = 1 / _CustomRenderTextureHeight;
                 float2 stride = float2(du, dv) * _Stride;
