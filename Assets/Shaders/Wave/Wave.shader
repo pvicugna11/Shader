@@ -10,6 +10,7 @@ Shader "Unlit/Wave"
     {
         Pass
         {
+            Name "Update"
             CGPROGRAM
             #pragma vertex CustomRenderTextureVertexShader
             #pragma fragment frag
@@ -20,7 +21,7 @@ Shader "Unlit/Wave"
             half _Attenuation;
             float _Stride;
 
-            fixed4 frag (v2f_customrendertexture i) : SV_Target
+            float4 frag (v2f_customrendertexture i) : SV_Target
             {
                 // CustomRenderTextureのuv座標
                 float2 uv = i.globalTexcoord;
@@ -46,7 +47,39 @@ Shader "Unlit/Wave"
                 value *= _Attenuation;
 
                 // R：現在の高さ G：1フレーム前の高さ
-                return fixed4(value, c.r, 0, 0);
+                return float4(value, c.r, 0, 0);
+            }
+            ENDCG
+        }
+
+        Pass
+        {
+            Name "LeftClick"
+            CGPROGRAM
+            #pragma vertex CustomRenderTextureVertexShader
+            #pragma fragment fragLeftClick
+
+            #include "UnityCustomRenderTexture.cginc"
+
+            float4 fragLeftClick (v2f_customrendertexture i) : SV_Target
+            {
+                return float4(-1, 0, 0, 0);
+            }
+            ENDCG
+        }
+
+        Pass
+        {
+            Name "RightClick"
+            CGPROGRAM
+            #pragma vertex CustomRenderTextureVertexShader
+            #pragma fragment fragRightClick
+
+            #include "UnityCustomRenderTexture.cginc"
+
+            float4 fragRightClick (v2f_customrendertexture i) : SV_Target
+            {
+                return float4(1, 0, 0, 0);
             }
             ENDCG
         }
