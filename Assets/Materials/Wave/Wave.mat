@@ -23,7 +23,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Attenuation: 0.999
-    - _C: 0.5
+    - _C: 0.2
     - _Stride: 3
     m_Colors: []
   m_BuildTextureStacks: []
