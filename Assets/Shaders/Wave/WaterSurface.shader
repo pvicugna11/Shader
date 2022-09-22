@@ -101,7 +101,7 @@ Shader "Unlit/WaterSurface"
                 // ライトによる色
                 float3 lightDir = normalize(_WorldSpaceLightPos0 - i.worldPos);
                 float diff = max(0, dot(i.normal, lightDir));
-                diff = 1;
+                diff = 1; // 暗すぎる
                 half4 baseColor = half4(_BaseColor.rgb * refractColor * diff, _BaseColor.a);
 
                 // 反射
