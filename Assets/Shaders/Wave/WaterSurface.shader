@@ -9,8 +9,8 @@ Shader "Unlit/WaterSurface"
     }
     SubShader
     {
-        Tags 
-        { 
+        Tags
+        {
             "RenderType" = "Transparent"
             "Queue" = "Transparent"
         }
