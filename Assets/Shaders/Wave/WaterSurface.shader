@@ -8,6 +8,7 @@ Shader "Unlit/WaterSurface"
         _Distance ("Distance", Range(0, 100)) = 10
         _MaxTessDistance ("Max Tessellation Distance", Range(0, 100)) = 25
         _Tess ("Tessellation", Range(0, 100)) = 10
+        _Displacement ("Displacement", Range(0, 100)) = .3
     }
     SubShader
     {
@@ -21,9 +22,9 @@ Shader "Unlit/WaterSurface"
         Pass
         {
             HLSLPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
+            #pragma require tessellation
             #pragma vertex TessellationVertexProgram
+            #pragma fragment frag
             #pragma hull hull
             #pragma domain domain
 
@@ -65,6 +66,7 @@ Shader "Unlit/WaterSurface"
             float _Distance;
             float _MaxTessDistance;
             float _Tess;
+            float _Displacement;
 
             ControlPoint TessellationVertexProgram(Attributes v)
             {
@@ -94,7 +96,7 @@ Shader "Unlit/WaterSurface"
 
             TessellationFactors patchConstantFunction(InputPatch<ControlPoint, 3> patch)
             {
-                float minDist = 5;
+                float minDist = 10;
                 float maxDist = _MaxTessDistance;
 
                 TessellationFactors f;
@@ -112,9 +114,6 @@ Shader "Unlit/WaterSurface"
 
             Varyings vert(Attributes v)
             {
-                // ワールド座標系の位置
-                float3 worldPos = mul(unity_ObjectToWorld, v.vertex);
-
                 // ハイトマップからノーマルマップを生成
                 // テクセルサイズを取得
                 float2 stride = float2(_HeightMap_TexelSize.xy);
@@ -129,6 +128,13 @@ Shader "Unlit/WaterSurface"
                 // ノーマルを計算
                 float3 normal = normalize(cross(du, dv));
                 float3 worldNormal = UnityObjectToWorldNormal(normal);
+
+                // 頂点移動
+                float d = tex2Dlod(_HeightMap, float4(v.uv, 0, 0)).r * _Displacement;
+                v.vertex.xyz += normal * d;
+
+                // ワールド座標系の位置
+                float3 worldPos = mul(unity_ObjectToWorld, v.vertex);
                 
                 // 屈折のサンプリング位置を決定
                 // ワールド座標系の視野ベクトル
