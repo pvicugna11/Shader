@@ -6,6 +6,8 @@ Shader "Unlit/WaterSurface"
         _HeightMap ("Height Map", 2D) = "gray" {}
         _RelativeRefractionIndex ("Relative Refraction Index", Range(0, 1)) = .75
         _Distance ("Distance", Range(0, 100)) = 10
+        _MaxTessDistance ("Max Tessellation Distance", Range(0, 100)) = 25
+        _Tess ("Tessellation", Range(0, 100)) = 10
     }
     SubShader
     {
@@ -21,6 +23,9 @@ Shader "Unlit/WaterSurface"
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #pragma vertex TessellationVertexProgram
+            #pragma hull hull
+            #pragma domain domain
 
             #include "UnityCG.cginc"
 
@@ -41,13 +46,71 @@ Shader "Unlit/WaterSurface"
                 half2 samplingViewportPos : TEXCOORD3;
             };
 
+            struct ControlPoint
+            {
+                float4 vertex : INTERNALTESSPOS;
+                float2 uv : TEXCOORD0;
+            };
+
+            struct TessellationFactors
+            {
+                float edge[3] : SV_TessFactor;
+                float inside : SV_InsideTessFactor;
+            };
+
             sampler2D _CameraOpaqueTexture;
             sampler2D _HeightMap;
             float4 _HeightMap_TexelSize;
             float _RelativeRefractionIndex;
             float _Distance;
+            float _MaxTessDistance;
+            float _Tess;
 
-            Varyings vert (Attributes v)
+            ControlPoint TessellationVertexProgram(Attributes v)
+            {
+                ControlPoint p;
+                p.vertex = v.vertex;
+                p.uv = v.uv;
+                return p;
+            }
+
+            [UNITY_domain("tri")]
+            [UNITY_outputcontrolpoints(3)]
+            [UNITY_outputtopology("triangle_cw")]
+            [UNITY_partitioning("fractional_odd")]
+            [UNITY_patchconstantfunc("patchConstantFunction")]
+            ControlPoint hull(InputPatch<ControlPoint, 3> patch, uint id : SV_OutputControlPointID)
+            {
+                return patch[id];
+            }
+
+            float CalcDistanceTessFactor(float4 vertex, float minDist, float maxDist, float tess)
+            {
+                float3 worldPosition = mul(unity_ObjectToWorld, vertex).xyz;
+                float dist = distance(worldPosition, _WorldSpaceCameraPos);
+                float f = clamp(1 - (dist - minDist) / (maxDist - minDist), .01, 1) * tess;
+                return (f);
+            }
+
+            TessellationFactors patchConstantFunction(InputPatch<ControlPoint, 3> patch)
+            {
+                float minDist = 5;
+                float maxDist = _MaxTessDistance;
+
+                TessellationFactors f;
+
+                float edge0 = CalcDistanceTessFactor(patch[0].vertex, minDist, maxDist, _Tess);
+                float edge1 = CalcDistanceTessFactor(patch[1].vertex, minDist, maxDist, _Tess);
+                float edge2 = CalcDistanceTessFactor(patch[2].vertex, minDist, maxDist, _Tess);
+
+                f.edge[0] = (edge1 + edge2) / 2;
+                f.edge[1] = (edge2 + edge0) / 2;
+                f.edge[2] = (edge0 + edge1) / 2;
+                f.inside = (edge0 + edge1 + edge2) / 3;
+                return f;
+            }
+
+            Varyings vert(Attributes v)
             {
                 // ワールド座標系の位置
                 float3 worldPos = mul(unity_ObjectToWorld, v.vertex);
@@ -88,6 +151,22 @@ Shader "Unlit/WaterSurface"
                 o.worldNormal = worldNormal;
                 o.samplingViewportPos = samplingViewportPos;
                 return o;
+            }
+
+            [UNITY_domain("tri")]
+            Varyings domain(TessellationFactors factors, OutputPatch<ControlPoint, 3> patch, float3 barycentricCoordinates : SV_DomainLocation)
+            {
+                Attributes v;
+
+#define DomainCalc(fieldName) v.fieldName = \
+                    patch[0].fieldName * barycentricCoordinates.x + \
+                    patch[1].fieldName * barycentricCoordinates.y + \
+                    patch[2].fieldName * barycentricCoordinates.z;
+
+                    DomainCalc(vertex)
+                    DomainCalc(uv)
+
+                return vert(v);
             }
 
             fixed4 frag (Varyings i) : SV_Target
