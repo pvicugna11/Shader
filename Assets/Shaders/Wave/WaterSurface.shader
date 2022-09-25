@@ -18,7 +18,7 @@ Shader "Unlit/WaterSurface"
 
         Pass
         {
-            CGPROGRAM
+            HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
 
@@ -26,13 +26,13 @@ Shader "Unlit/WaterSurface"
 
             half4 _BaseColor;
 
-            struct appdata
+            struct Attributes
             {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
             };
 
-            struct v2f
+            struct Varyings
             {
                 float4 vertex : SV_POSITION;
                 float3 normal : TEXCOORD0;
@@ -47,7 +47,7 @@ Shader "Unlit/WaterSurface"
             float _RelativeRefractionIndex;
             float _Distance;
 
-            v2f vert (appdata v)
+            Varyings vert (Attributes v)
             {
                 // ワールド座標系の位置
                 float3 worldPos = mul(unity_ObjectToWorld, v.vertex);
@@ -81,7 +81,7 @@ Shader "Unlit/WaterSurface"
                 samplingViewportPos.y = 1 - samplingViewportPos.y;
 
                 // 出力
-                v2f o;
+                Varyings o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.worldPos = worldPos;
                 o.normal = normal;
@@ -90,7 +90,7 @@ Shader "Unlit/WaterSurface"
                 return o;
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            fixed4 frag (Varyings i) : SV_Target
             {
                 // ワールド座標系の視野ベクトル
                 half3 worldViewDir = normalize(i.worldPos - _WorldSpaceCameraPos);
@@ -115,7 +115,7 @@ Shader "Unlit/WaterSurface"
                 half4 col = lerp(baseColor, reflColor, fresenl);
                 return fixed4(col);
             }
-            ENDCG
+            ENDHLSL
         }
     }
 }
