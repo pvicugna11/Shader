@@ -48,6 +48,7 @@ public class AnimatorGenerator : EditorWindow
         EditorGUILayout.Space();
         
         // 各アニメーションの再生時間
+        EditorGUILayout.LabelField("Play Time Per Animation", EditorStyles.boldLabel);
         playTime = EditorGUILayout.FloatField("Play Time", playTime);
 
         EditorGUILayout.Space();
